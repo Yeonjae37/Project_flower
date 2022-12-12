@@ -146,3 +146,33 @@ void show_stock() {
     }
     printf("\n\n");
 }
+//상품 등록 함수
+void register_item() {
+    char name[30];
+    int stock;
+    int price;
+    char op;
+
+    //상품 정보 입력
+    show_stock();
+    printf("꽃 이름과 수량을 입력하세요<취소:0>\n\n");
+    printf("꽃 이름: ");
+    scanf("%s", name);
+    if (strcmp(name, "0") == 0)
+        return;
+    printf("\n수 량: ");
+    scanf("%d", &stock);
+    printf("\n가 격: ");
+    scanf("%d", &price);
+    printf("\n정말로 상품을 등록 하시겠습니까? (y/n): ");
+    getchar();
+    op = getchar();
+    if (op == 'n')
+        return;
+    //y입력시 등록
+    else if (op == 'y') {
+        append(name, stock, price);
+        printf("\n정상적으로 등록되었습니다.\n\n");
+        printf("\n\n");
+    }
+}
