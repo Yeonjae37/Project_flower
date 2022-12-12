@@ -223,3 +223,37 @@ void item_manage() {
         }
     }
 }
+
+//파일 저장 기능
+void save() {
+    FILE* fp = fopen("Data.txt", "w");
+    Item* cur = head->next;
+    //연결리스트를 끝까지 돌면서 내용 저장
+    while (cur->next != NULL) {
+        fprintf(fp, "%s %d %d\n", cur->name, cur->stock, cur->price);
+        cur = cur->next;
+    }
+    fprintf(fp, "%s %d %d\n", cur->name, cur->stock, cur->price);
+    fclose(fp);
+}
+
+//관리자 페이지로 이동
+void admin_menu_page() {
+    int op;
+    while (1) {
+        system("cls");
+        print_admin_menu();
+        scanf("%d", &op);
+        if (op == 1) {
+            item_manage();
+        }
+        else if (op == 2) {
+            printf("\n\n-- 재고 현황 입니다 --\n\n");
+            show_stock();
+            printf("\n\n");
+        }
+        else if (op == 3) {
+            break;
+        }
+    }
+}
