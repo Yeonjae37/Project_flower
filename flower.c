@@ -116,3 +116,21 @@ void delete(char name[30]) {
         printf("\n\n삭제가 완료되었습니다.\n\n");
     }
 }
+
+//상품 수정 주요 기능 함수
+void edit(char from_name[30], char to_name[30]) {
+    //Delete랑 똑같은 원리로 작동
+    Item* cur = head->next;
+    while (cur->next != NULL && strcmp(cur->name, from_name) != 0) {
+        cur = cur->next;
+    }
+    if (strcmp(cur->name, from_name) != 0) {
+        printf("\n\n%s가 목록에 없습니다.\n\n", from_name);
+    }
+    //찾았을경우 해당 정보 수정
+    else {
+        strcpy(cur->name, to_name);
+        printf("\n\n수정이 완료되었습니다.\n\n");
+    }
+
+}
