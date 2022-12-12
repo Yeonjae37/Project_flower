@@ -176,3 +176,50 @@ void register_item() {
         printf("\n\n");
     }
 }
+
+//상품 삭제 함수
+void delete_item() {
+    char name[30];
+    char op;
+    //삭제할 상품명 입력
+    show_stock();
+    printf("삭제하실 꽃의 이름을 입력하세요<취소:0>\n\n");
+    printf("상품명: ");
+    scanf("%s", name);
+    if (strcmp(name, "0") == 0)
+        return;
+    printf("\n\n%s 를 정말로 삭제합니까?(y/n): ", name);
+    getchar();
+    op = getchar();
+    if (op == 'n')
+        return;
+    //y입력시 삭제
+    else if (op == 'y') {
+        delete(name);
+        printf("\n\n");
+    }
+}
+
+//상품관리 페이지
+void item_manage() {
+    int op;
+    while (1) {
+        system("cls");
+        print_item_menu();
+        scanf("%d", &op);
+        if (op == 1) {
+            register_item();
+        }
+        else if (op == 2) {
+            delete_item();
+        }
+        else if (op == 3) {
+            printf("\n\n-- 재고 현황 입니다 --\n\n");
+            show_stock();
+            printf("\n\n");
+        }
+        else if (op == 4) {
+            break;
+        }
+    }
+}
