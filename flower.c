@@ -66,3 +66,19 @@ void print_user_menu() {
     printf("============================\n");
     printf("\n>>>원하시는 메뉴 숫자를 입력하세요: ");
 }
+
+//상품 등록 주요 기능 함수
+void append(char name[30], int stock, int price) {
+    //연결리스트 append 원리로 작동
+    Item* newItem = (Item*)malloc(sizeof(Item));
+    Item* cur = head;
+    strcpy(newItem->name, name);
+    newItem->stock = stock;
+    newItem->price = price;
+    while (cur->next != NULL) {
+        cur = cur->next;
+    }
+    newItem->next = cur->next;
+    cur->next = newItem;
+    numOfData++;
+}
