@@ -134,3 +134,15 @@ void edit(char from_name[30], char to_name[30]) {
     }
 
 }
+
+//재고 현황 출력 함수
+void show_stock() {
+    Item* cur = head->next;
+    printf("\n\n");
+    //연결리스트 끝까지가면서 전부 출력
+    while (cur != NULL) {
+        printf("%-10s %-4d개\t각%-4d원\n", cur->name, cur->stock, cur->price);
+        cur = cur->next;
+    }
+    printf("\n\n");
+}
