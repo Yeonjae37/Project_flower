@@ -95,3 +95,24 @@ void load_data() {
     }
     fclose(fp);
 }
+
+//상품 삭제 주요 기능 함수
+void delete(char name[30]) {
+    Item* cur = head->next;
+    Item* prev = head;
+    //while문을 통해 name과 동일한 이름의 상품 탐색
+    while (cur->next != NULL && strcmp(cur->name, name) != 0) {
+        prev = cur;
+        cur = cur->next;
+    }
+    //찾지 못했다면 오류문구 출력
+    if (strcmp(cur->name, name) != 0) {
+        printf("\n\n%s가 목록에 없습니다.\n\n", name);
+    }
+    //찾았다면 삭제
+    else {
+        prev->next = cur->next;
+        free(cur);
+        printf("\n\n삭제가 완료되었습니다.\n\n");
+    }
+}
