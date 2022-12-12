@@ -82,3 +82,16 @@ void append(char name[30], int stock, int price) {
     cur->next = newItem;
     numOfData++;
 }
+
+//파일로부터 데이터 불러오는 함수
+void load_data() {
+    char name[30];
+    int stock, price;
+    FILE* fp = fopen("Data.txt", "r");
+    //Data.txt파일로부터 한줄씩 데이터를 읽고 append함수 호출
+    while (!feof(fp)) {
+        fscanf(fp, "%s %d %d\n", name, &stock, &price);
+        append(name, stock, price);
+    }
+    fclose(fp);
+}
