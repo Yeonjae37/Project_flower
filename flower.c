@@ -13,7 +13,7 @@ typedef struct _item {
 Item* head; //재고 저장 헤드 노드
 int numOfData = 0; //재고 개수
 int cart[100] = { 0, }; //카트 배열 최대 100;
-int money; //사용자 입력 소지 돈
+int money; //사용자 입력 소지돈
 
 //연결리스트 초기화 함수
 void init() {
@@ -146,6 +146,7 @@ void show_stock() {
     }
     printf("\n\n");
 }
+
 //상품 등록 함수
 void register_item() {
     char name[30];
@@ -253,6 +254,156 @@ void admin_menu_page() {
             printf("\n\n");
         }
         else if (op == 3) {
+            break;
+        }
+    }
+}
+
+void add_to_cart() {
+    char name[30];
+    int idx = 0, amount;
+    Item* cur = head->next;
+
+    //꽃 재고 현황 보여주기
+    show_stock();
+
+    printf("\n현재 잔액: %d\n", money);
+    printf("구매할 꽃 이름 입력: ");
+    scanf("%s", name);
+    while (cur->next != NULL && strcmp(cur->name, name) != 0) {
+        cur = cur->next;
+        idx++;
+    }
+    if (strcmp(cur->name, name) != 0) {
+        printf("\n\n%s가 목록에 없습니다.\n\n", name);
+    }
+    //찾았다면 추가로 구매할 개수도 입력받는다
+    else {
+        printf("구매할 꽃의 개수 입력: ");
+        scanf("%d", &amount);
+        //소지금액을 초과하면 추가하지 않고 문구 출력
+        if (cur->price * amount > money)
+            printf("\n\n소지금액을 초과하는 양의 금액을 담을 수 없습니다\n");
+        else {
+            printf("\n\n담기 성공!\n");
+            cart[idx] += amount;
+            money -= cur->price * amount;
+        }
+    }
+}
+
+void delete_from_cart() {
+    char name[30];
+    int idx = 0;
+    Item* cur = head->next;
+
+    printf("삭제할 꽃 이름 입력: ");
+    scanf("%s", name);
+    while (cur->next != NULL && strcmp(cur->name, name) != 0) {
+        cur = cur->next;
+        idx++;
+    }
+    if (strcmp(cur->name, name) != 0) {
+        printf("\n\n%s가 목록에 없습니다.\n\n", name);
+    }
+    //찾았다면 꽃다발에서 해당 꽃을 비운다
+    else {
+        //꽃다발에 개수가 0개일 경우 아래와 같은 문구 출력
+        if (cart[idx] == 0)
+            printf("\n\n%s가 꽃다발에 아무것도 담겨있지 않습니다.\n", name);
+        else {
+            money += cur->price * cart[idx];
+            cart[idx] = 0;
+            printf("\n\n삭제완료\n");
+        }
+    }
+}
+
+void show_cart_list() {
+    int i;
+    Item* cur = head->next;
+    //꽃 개수만큼 꽃다발 확인
+    printf("\n꽃 목록:\n");
+    printf("\n----------------------\n");
+    printf("이름\t\t수량\n");
+    for (i = 0; i < numOfData; i++) {
+        //꽃다발에 담은 수량이 0개 보다 많을 경우에만 출력
+        if (cart[i] > 0) {
+            printf("%s\t\t%d개\n", cur->name, cart[i]);
+        }
+        cur = cur->next;
+    }
+    printf("----------------------\n");
+    printf("\n\n3초 뒤 메뉴화면으로 이동합니다.\n");
+}
+
+void pay() {
+    int i, total = 0;
+    Item* cur = head->next;
+    //꽃 개수만큼 꽃다발 확인
+    printf("\n꽃다발 목록:\n");
+    printf("\n----------------------\n");
+    printf("이름\t\t수량\n");
+    for (i = 0; i < numOfData; i++) {
+        //꽃다발에 담은 수량이 0개 보다 많을 경우에만 출력
+        if (cart[i] > 0) {
+            printf("%s\t\t%d송이\n", cur->name, cart[i]);
+            total += cur->price * cart[i]; //총금액도 계산
+        }
+        cur = cur->next;
+    }
+    printf("----------------------\n");
+    printf("총 금액: %d원\n", total);
+    printf("잔돈: %d원\n", money);
+    printf("\n\n구매해주셔서 감사합니다.\n");
+}
+
+void user_menu_page() {
+    int op;
+    while (1) {
+        system("cls");
+        print_user_menu();
+        scanf("%d", &op);
+        if (op == 1) {
+            add_to_cart();
+            printf("\n\n");
+        }
+        else if (op == 2) {
+            delete_from_cart();
+            printf("\n\n");
+        }
+        else if (op == 3) {
+            show_cart_list();
+            printf("\n\n");
+        }
+        else if (op == 4) {
+            pay();
+            printf("\n\n");
+            break;
+        }
+    }
+}
+
+int main() {
+    int op;
+    init();
+    load_data();
+
+    while (1) {
+        system("cls");
+        print_menus();
+        scanf("%d", &op);
+        if (op == 1) { //관리자 메뉴로 이동
+            admin_menu_page();
+        }
+        else if (op == 2) {//사용자 메뉴로 이동
+            printf("\n소지 금액 입력: ");
+            scanf("%d", &money);
+            user_menu_page();
+        }
+        else if (op == 3) {
+            printf("프로그램 종료\n");
+            save();
             break;
         }
     }
